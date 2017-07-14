@@ -1,0 +1,29 @@
+#!/bin/bash
+FA=hostname1
+DB=hostname2
+OHS=hostname3
+
+
+if [ $# -eq 0 ];
+then
+echo "Usage: `basename $0` <FA/DB/OHS> <parameter1/parameter2/...>"
+echo "Eg: `basename $0` <FA> <gather.sh>"
+exit
+fi
+
+OLD_IDS="$IFS"
+IFS="/"   #default is " "
+to=($1)
+files=($2)
+IFS="$OLD_IFS"    #return to the default
+
+for s in ${to[@]}
+do
+echo "$s"
+server=`eval echo '$'"$s"`
+echo $server
+for f in ${files[@]}
+do
+scp $f oracle@$server:/u01/app/oracle/
+done
+done
